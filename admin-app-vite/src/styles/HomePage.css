@@ -1,0 +1,60 @@
+/* Global styles for homepage */
+.homepage {
+  min-height: 100vh;
+}
+
+
+.container {
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+
+/* Base Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, #e86f8c, #c93e64);
+  border: none;
+  padding: 10px 24px;
+  border-radius: 40px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+
+.btn-outline {
+  background: transparent;
+  background: linear-gradient(135deg, #e86f8c, #c93e64);
+  padding: 10px 22px;
+  border-radius: 40px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  color: white;
+}
+
+.btn-large {
+  padding: 14px 36px;
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+}

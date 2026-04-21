@@ -1,0 +1,138 @@
+/* ================= HEADER ================= */
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ================= CONTAINER ================= */
+.header-container {
+  display: flex;
+  min-height: 60px;              /* FIX: prevent zoom breaking */
+  background-color: #a32b41;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 24px;             /* FIX */
+  flex-wrap: wrap;               /* FIX */
+}
+
+/* ================= LOGO ================= */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 60px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+/* ================= NAV ================= */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ================= LINKS ================= */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffd6d6;
+}
+
+/* ================= BUTTONS ================= */
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* ================= HAMBURGER ================= */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: #ffffff;
+  transition: 0.3s;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+  .nav-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    background: #a32b41;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    display: none;
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .nav-links a {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
