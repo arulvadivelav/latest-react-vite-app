@@ -25,10 +25,13 @@ const LoginPage = () => {
       if (result.status_code === RESPONSE_200) {
         setAlert({ message: result.message, type: 'success' });
 
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
+        // Save login status
+        localStorage.setItem("isLoggedIn", "true");
 
+        setTimeout(() => {
+          navigate('/profiles');
+          window.location.reload();
+        }, 2000);
       } else if (result.status_code === RESPONSE_400) {
         setAlert({ message: result.message, type: 'error' });
         setErrorMsg({ general: result.message });

@@ -98,7 +98,11 @@ const ProfileModal = ({
               </div>
               <div className="detail-item">
                 <span className="detail-label">Location:</span>
-                <span className="detail-value">{profile.location}</span>
+                <span className="detail-value">
+                  {profile.location
+                    ? `${profile.location.city || ""}, ${profile.location.state || ""}, ${profile.location.country || ""}`
+                    : "Not specified"}
+                </span>
               </div>
             </div>
           </div>
