@@ -1,270 +1,326 @@
-const profiles = [
+// mock/profiles.js
+
+const allProfiles = [
   {
     id: 1,
-    name: "Arun Kumar",
-    age: 28,
+    name: "Priya Sharma",
+    age: 26,
+    gender: "female",
+    religion: "hindu",
+    caste: "Brahmin",
+    location: { country: "india", state: "tn", city: "chennai" },
+    marital_status: "single",
+    education: "be",
     profession: "Software Engineer",
-    location: "Coimbatore",
-    height: "5.8 ft",
-    education: "B.E",
-    about: "Simple, family-oriented and loves travel.",
-    images: [
-      "https://randomuser.me/api/portraits/men/11.jpg",
-      "https://randomuser.me/api/portraits/men/12.jpg",
-      "https://randomuser.me/api/portraits/men/13.jpg"
-    ]
+    income: "6+",
+    mother_tongue: "tamil",
+    star: "Rohini",
+    rasi: "Vrishabha",
+    height: "5.5",
+    diet: "veg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "middle",
+    images: ["https://randomuser.me/api/portraits/women/1.jpg"],
   },
   {
     id: 2,
-    name: "Kavya Priya",
-    age: 26,
-    profession: "UI/UX Designer",
-    location: "Chennai",
-    height: "5.4 ft",
-    education: "B.Sc Visual Communication",
-    about: "Creative designer who loves art and music.",
-    images: [
-      "https://randomuser.me/api/portraits/women/21.jpg",
-      "https://randomuser.me/api/portraits/women/22.jpg",
-      "https://randomuser.me/api/portraits/women/23.jpg"
-    ]
+    name: "Ananya Krishnan",
+    age: 28,
+    gender: "female",
+    religion: "hindu",
+    caste: "Nair",
+    location: { country: "india", state: "kl", city: "kochi" },
+    marital_status: "single",
+    education: "mba",
+    profession: "Marketing Manager",
+    income: "6+",
+    mother_tongue: "malayalam",
+    star: "Ashwini",
+    rasi: "Mesha",
+    height: "5.5",
+    diet: "nonveg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "upper",
+    images: ["https://randomuser.me/api/portraits/women/2.jpg"],
   },
   {
     id: 3,
-    name: "Vignesh R",
-    age: 30,
-    profession: "Business Analyst",
-    location: "Bangalore",
-    height: "5.9 ft",
-    education: "MBA",
-    about: "Passionate about data and business growth.",
-    images: [
-      "https://randomuser.me/api/portraits/men/31.jpg",
-      "https://randomuser.me/api/portraits/men/32.jpg"
-    ]
+    name: "Kavitha Rajan",
+    age: 24,
+    gender: "female",
+    religion: "hindu",
+    caste: "Chettiar",
+    location: { country: "india", state: "tn", city: "coimbatore" },
+    marital_status: "single",
+    education: "mca",
+    profession: "Data Analyst",
+    income: "3-6",
+    mother_tongue: "tamil",
+    star: "Bharani",
+    rasi: "Mesha",
+    height: "5.0",
+    diet: "veg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "middle",
+    images: ["https://randomuser.me/api/portraits/women/3.jpg"],
   },
   {
     id: 4,
-    name: "Divya S",
-    age: 25,
-    profession: "Doctor",
-    location: "Madurai",
-    height: "5.3 ft",
-    education: "MBBS",
-    about: "Helping people and saving lives is my passion.",
-    images: [
-      "https://randomuser.me/api/portraits/women/41.jpg",
-      "https://randomuser.me/api/portraits/women/42.jpg"
-    ]
+    name: "Lakshmi Nair",
+    age: 30,
+    gender: "female",
+    religion: "hindu",
+    caste: "Pillai",
+    location: { country: "india", state: "kl", city: "trivandrum" },
+    marital_status: "divorced",
+    education: "mba",
+    profession: "HR Manager",
+    income: "6+",
+    mother_tongue: "malayalam",
+    star: "Karthika",
+    rasi: "Vrishabha",
+    height: "5.5",
+    diet: "nonveg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "upper",
+    images: ["https://randomuser.me/api/portraits/women/4.jpg"],
   },
   {
     id: 5,
-    name: "Ramesh B",
-    age: 32,
+    name: "Meena Sundar",
+    age: 25,
+    gender: "female",
+    religion: "christian",
+    caste: "Nadar",
+    location: { country: "india", state: "tn", city: "chennai" },
+    marital_status: "single",
+    education: "be",
     profession: "Civil Engineer",
-    location: "Trichy",
-    height: "5.10 ft",
-    education: "B.E Civil",
-    about: "Building strong structures and stronger relationships.",
-    images: [
-      "https://randomuser.me/api/portraits/men/51.jpg"
-    ]
+    income: "3-6",
+    mother_tongue: "tamil",
+    star: "Mrigashira",
+    rasi: "Mithuna",
+    height: "5.0",
+    diet: "nonveg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "middle",
+    images: ["https://randomuser.me/api/portraits/women/5.jpg"],
   },
   {
     id: 6,
-    name: "Meera K",
-    age: 27,
-    profession: "Teacher",
-    location: "Salem",
-    height: "5.5 ft",
-    education: "M.A English",
-    about: "Teaching is not a job, it's my passion.",
-    images: [
-      "https://randomuser.me/api/portraits/women/61.jpg"
-    ]
+    name: "Rajesh Kumar",
+    age: 29,
+    gender: "male",
+    religion: "hindu",
+    caste: "Mudaliar",
+    location: { country: "india", state: "tn", city: "coimbatore" },
+    marital_status: "single",
+    education: "mba",
+    profession: "Business Analyst",
+    income: "6+",
+    mother_tongue: "tamil",
+    star: "Punarvasu",
+    rasi: "Mithuna",
+    height: "5.5",
+    diet: "nonveg",
+    smoking: "no",
+    drinking: "yes",
+    family_status: "upper",
+    images: ["https://randomuser.me/api/portraits/men/1.jpg"],
   },
   {
     id: 7,
-    name: "Suresh V",
-    age: 29,
+    name: "Arjun Menon",
+    age: 27,
+    gender: "male",
+    religion: "hindu",
+    caste: "Nair",
+    location: { country: "india", state: "kl", city: "kochi" },
+    marital_status: "single",
+    education: "be",
     profession: "Software Developer",
-    location: "Coimbatore",
-    height: "5.8 ft",
-    education: "B.Tech IT",
-    about: "Coding, coffee and continuous learning.",
-    images: [
-      "https://randomuser.me/api/portraits/men/71.jpg"
-    ]
+    income: "6+",
+    mother_tongue: "malayalam",
+    star: "Pushyami",
+    rasi: "Karkataka",
+    height: "6.0",
+    diet: "nonveg",
+    smoking: "no",
+    drinking: "yes",
+    family_status: "middle",
+    images: ["https://randomuser.me/api/portraits/men/2.jpg"],
   },
   {
     id: 8,
-    name: "Lakshmi Devi",
-    age: 24,
-    profession: "Fashion Designer",
-    location: "Chennai",
-    height: "5.4 ft",
-    education: "Diploma in Fashion Design",
-    about: "Designing dreams into reality.",
-    images: [
-      "https://randomuser.me/api/portraits/women/11.jpg"
-    ]
+    name: "Vikram Pillai",
+    age: 32,
+    gender: "male",
+    religion: "hindu",
+    caste: "Pillai",
+    location: { country: "india", state: "kl", city: "trivandrum" },
+    marital_status: "divorced",
+    education: "mca",
+    profession: "IT Consultant",
+    income: "6+",
+    mother_tongue: "malayalam",
+    star: "Makha",
+    rasi: "Simha",
+    height: "5.5",
+    diet: "nonveg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "upper",
+    images: ["https://randomuser.me/api/portraits/men/3.jpg"],
   },
   {
     id: 9,
-    name: "Prakash M",
+    name: "Suresh Babu",
     age: 31,
-    profession: "Architect",
-    location: "Bangalore",
-    height: "5.11 ft",
-    education: "B.Arch",
-    about: "Designing modern living spaces.",
-    images: [
-      "https://randomuser.me/api/portraits/men/21.jpg"
-    ]
+    gender: "male",
+    religion: "christian",
+    caste: "Nadar",
+    location: { country: "india", state: "tn", city: "chennai" },
+    marital_status: "single",
+    education: "mba",
+    profession: "Financial Advisor",
+    income: "3-6",
+    mother_tongue: "tamil",
+    star: "Uttara",
+    rasi: "Kanya",
+    height: "5.5",
+    diet: "nonveg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "middle",
+    images: ["https://randomuser.me/api/portraits/men/4.jpg"],
   },
   {
     id: 10,
-    name: "Anitha R",
-    age: 26,
-    profession: "HR Manager",
-    location: "Coimbatore",
-    height: "5.3 ft",
-    education: "MBA HR",
-    about: "People management is my strength.",
-    images: [
-      "https://randomuser.me/api/portraits/women/31.jpg"
-    ]
+    name: "Deepa Iyer",
+    age: 23,
+    gender: "female",
+    religion: "hindu",
+    caste: "Brahmin",
+    location: { country: "india", state: "tn", city: "coimbatore" },
+    marital_status: "single",
+    education: "be",
+    profession: "Product Designer",
+    income: "3-6",
+    mother_tongue: "tamil",
+    star: "Hasta",
+    rasi: "Kanya",
+    height: "5.0",
+    diet: "veg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "middle",
+    images: ["https://randomuser.me/api/portraits/women/10.jpg"],
   },
   {
     id: 11,
-    name: "Karthik S",
-    age: 28,
-    profession: "DevOps Engineer",
-    location: "Hyderabad",
-    height: "5.9 ft",
-    education: "B.E CSE",
-    about: "Automation and cloud enthusiast.",
-    images: [
-      "https://randomuser.me/api/portraits/men/41.jpg"
-    ]
+    name: "Karthik Venkat",
+    age: 34,
+    gender: "male",
+    religion: "hindu",
+    caste: "Brahmin",
+    location: { country: "india", state: "tn", city: "chennai" },
+    marital_status: "single",
+    education: "mba",
+    profession: "Operations Lead",
+    income: "6+",
+    mother_tongue: "tamil",
+    star: "Chitra",
+    rasi: "Tula",
+    height: "6.0",
+    diet: "veg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "upper",
+    images: ["https://randomuser.me/api/portraits/men/5.jpg"],
   },
   {
     id: 12,
-    name: "Nithya K",
-    age: 25,
-    profession: "Nurse",
-    location: "Madurai",
-    height: "5.2 ft",
-    education: "B.Sc Nursing",
-    about: "Care and compassion define me.",
-    images: [
-      "https://randomuser.me/api/portraits/women/51.jpg"
-    ]
-  },
-  {
-    id: 13,
-    name: "Manoj P",
-    age: 33,
-    profession: "Manager",
-    location: "Chennai",
-    height: "5.10 ft",
-    education: "MBA",
-    about: "Leading teams and achieving goals.",
-    images: [
-      "https://randomuser.me/api/portraits/men/61.jpg"
-    ]
-  },
-  {
-    id: 14,
-    name: "Swetha L",
+    name: "Nithya Ramesh",
     age: 27,
-    profession: "Data Analyst",
-    location: "Bangalore",
-    height: "5.5 ft",
-    education: "M.Sc Statistics",
-    about: "Turning data into insights.",
-    images: [
-      "https://randomuser.me/api/portraits/women/71.jpg"
-    ]
+    gender: "female",
+    religion: "hindu",
+    caste: "Gounder",
+    location: { country: "india", state: "tn", city: "coimbatore" },
+    marital_status: "single",
+    education: "mca",
+    profession: "Systems Engineer",
+    income: "3-6",
+    mother_tongue: "tamil",
+    star: "Swati",
+    rasi: "Tula",
+    height: "5.5",
+    diet: "veg",
+    smoking: "no",
+    drinking: "no",
+    family_status: "middle",
+    images: ["https://randomuser.me/api/portraits/women/12.jpg"],
   },
-  {
-    id: 15,
-    name: "Rajesh K",
-    age: 29,
-    profession: "Mechanical Engineer",
-    location: "Salem",
-    height: "5.9 ft",
-    education: "B.E Mechanical",
-    about: "Machines and innovation excite me.",
-    images: [
-      "https://randomuser.me/api/portraits/men/15.jpg"
-    ]
-  },
-  {
-    id: 16,
-    name: "Priya M",
-    age: 24,
-    profession: "Content Writer",
-    location: "Coimbatore",
-    height: "5.4 ft",
-    education: "B.A English",
-    about: "Words are my world.",
-    images: [
-      "https://randomuser.me/api/portraits/women/16.jpg"
-    ]
-  },
-  {
-    id: 17,
-    name: "Dinesh R",
-    age: 30,
-    profession: "Network Engineer",
-    location: "Chennai",
-    height: "5.8 ft",
-    education: "B.Sc IT",
-    about: "Keeping networks running smoothly.",
-    images: [
-      "https://randomuser.me/api/portraits/men/17.jpg"
-    ]
-  },
-  {
-    id: 18,
-    name: "Harini S",
-    age: 26,
-    profession: "Pharmacist",
-    location: "Trichy",
-    height: "5.3 ft",
-    education: "B.Pharm",
-    about: "Healthcare and medicine lover.",
-    images: [
-      "https://randomuser.me/api/portraits/women/18.jpg"
-    ]
-  },
-  {
-    id: 19,
-    name: "Senthil V",
-    age: 34,
-    profession: "Senior Developer",
-    location: "Bangalore",
-    height: "5.10 ft",
-    education: "MCA",
-    about: "Experienced full-stack developer.",
-    images: [
-      "https://randomuser.me/api/portraits/men/19.jpg"
-    ]
-  },
-  {
-    id: 20,
-    name: "Aishwarya N",
-    age: 25,
-    profession: "Graphic Designer",
-    location: "Chennai",
-    height: "5.5 ft",
-    education: "B.Des",
-    about: "Design is my language.",
-    images: [
-      "https://randomuser.me/api/portraits/women/20.jpg"
-    ]
-  }
 ];
 
-export default profiles;
+/**
+ * Simulated API: filter + paginate profiles
+ */
+export const fetchProfiles = ({ filters = {}, page = 1, itemsPerPage = 4 }) => {
+  let results = [...allProfiles];
+
+  // Apply filters
+  if (filters.gender) results = results.filter(p => p.gender === filters.gender);
+  if (filters.min_age) results = results.filter(p => p.age >= Number(filters.min_age));
+  if (filters.max_age) results = results.filter(p => p.age <= Number(filters.max_age));
+  if (filters.religion) results = results.filter(p => p.religion === filters.religion);
+  if (filters.caste) results = results.filter(p => p.caste?.toLowerCase().includes(filters.caste.toLowerCase()));
+  if (filters.marital_status) results = results.filter(p => p.marital_status === filters.marital_status);
+  if (filters.education) results = results.filter(p => p.education === filters.education);
+  if (filters.profession) results = results.filter(p => p.profession?.toLowerCase().includes(filters.profession.toLowerCase()));
+  if (filters.income) results = results.filter(p => p.income === filters.income);
+  if (filters.mother_tongue) results = results.filter(p => p.mother_tongue === filters.mother_tongue);
+  if (filters.star) results = results.filter(p => p.star?.toLowerCase().includes(filters.star.toLowerCase()));
+  if (filters.rasi) results = results.filter(p => p.rasi?.toLowerCase().includes(filters.rasi.toLowerCase()));
+  if (filters.height) results = results.filter(p => p.height === filters.height);
+  if (filters.diet) results = results.filter(p => p.diet === filters.diet);
+  if (filters.smoking) results = results.filter(p => p.smoking === filters.smoking);
+  if (filters.drinking) results = results.filter(p => p.drinking === filters.drinking);
+  if (filters.family_status) results = results.filter(p => p.family_status === filters.family_status);
+
+  // Nested location filters
+  if (filters.country)
+    results = results.filter(p => p.location.country === filters.country);
+
+  if (filters.state)
+    results = results.filter(p => p.location.state === filters.state);
+
+  if (filters.city)
+    results = results.filter(p => p.location.city === filters.city);
+  const totalItems = results.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+  const safePage = Math.min(Math.max(1, page), totalPages);
+  const start = (safePage - 1) * itemsPerPage;
+  const items = results.slice(start, start + itemsPerPage);
+
+  return {
+    items,
+    page: safePage,
+    totalPages,
+    totalItems,
+    itemsPerPage,
+  };
+};
+
+/**
+ * Count matching profiles without pagination
+ */
+export const countProfiles = (filters = {}) => {
+  return fetchProfiles({ filters, page: 1, itemsPerPage: 9999 }).totalItems;
+};
+
+export default allProfiles;

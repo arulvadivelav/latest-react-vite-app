@@ -22,7 +22,11 @@ const ProfileCard = ({ profile, onClick }) => {
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Location:</span>
-                  <span className="detail-value">{profile.location}</span>
+                  <span className="detail-value">
+                    {profile.location
+                      ? `${profile.location.city || ""}, ${profile.location.state || ""}`
+                      : "N/A"}
+                  </span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Height:</span>

@@ -38,7 +38,7 @@ const Header = () => {
           {/* Logo */}
           <div className="logo">
             <img src={logo} alt="Logo" className="logo-img" />
-            <span className="logo-text">Vasantham Nadar Matrimony</span>
+            <span className="logo-text">VN</span>
           </div>
 
           {/* Main Navigation */}

@@ -1,77 +1,150 @@
-import React, { useState } from 'react';
-import '../styles/components/SearchSection.css';
+// SearchSection.jsx
+import React, { useState, useEffect, useRef } from "react";
+import FormField from "./FormField";
+import FilterConfig from "../configs/FilterFields.js";
+import { cityOptions, stateOptions } from "../configs/LocationData";
+import { countProfiles } from "../mock/profiles";
 
-const SearchSection = ({ onSearch }) => {
-  const [filters, setFilters] = useState({
-    keyword: '',
-    gender: '',
-    age: '',
-    religion: '',
-    location: ''
-  });
+const SearchSection = ({ onSearch, onClear }) => {
+  const initialState = FilterConfig.reduce((acc, field) => {
+    acc[field.name] = field.default ?? "";
+    return acc;
+  }, {});
+
+  const [filters, setFilters] = useState(initialState);
+  const [errors, setErrors] = useState({});
+  const [liveCount, setLiveCount] = useState(null);
+  const debounceRef = useRef(null);
+
+  // Update live count whenever filters change (with debounce)
+  useEffect(() => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      const payload = buildApiPayload(filters);
+      const hasAnyFilter = Object.keys(payload).length > 0;
+      if (hasAnyFilter) {
+        setLiveCount(countProfiles(payload));
+      } else {
+        setLiveCount(null);
+      }
+    }, 300);
+    return () => clearTimeout(debounceRef.current);
+  }, [filters]);
 
   const handleChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let updated = { ...filters, [name]: value };
+    if (name === "state") updated.city = "";
+    setFilters(updated);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (onSearch) onSearch(filters);
+  const validate = () => {
+    let newErrors = {};
+    FilterConfig.forEach((field) => {
+      if (field.validate) {
+        const error = field.validate(filters[field.name]);
+        if (error) newErrors[field.name] = error;
+      }
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const buildApiPayload = (filtersToUse = filters) => {
+    let payload = {};
+    FilterConfig.forEach((field) => {
+      const value = filtersToUse[field.name];
+      if (value === "" || value === null || value === undefined) return;
+
+      if (Array.isArray(field.apiKey)) {
+        payload[field.apiKey[0]] = value[0];
+        payload[field.apiKey[1]] = value[1];
+      } else if (field.apiKey.includes(".")) {
+        const keys = field.apiKey.split(".");
+        let current = payload;
+        keys.forEach((key, index) => {
+          if (index === keys.length - 1) {
+            current[key] = value;
+          } else {
+            current[key] = current[key] || {};
+            current = current[key];
+          }
+        });
+      } else {
+        payload[field.apiKey] = value;
+      }
+    });
+    return payload;
+  };
+
+  const handleSearch = () => {
+    if (!validate()) return;
+    const apiPayload = buildApiPayload();
+    onSearch(apiPayload);
+  };
+
+  const handleClear = () => {
+    setFilters(initialState);
+    setErrors({});
+    setLiveCount(null);
+    onClear();
   };
 
   return (
-    <section className="search-section">
-      <div className="container">
-        <form className="search-form" onSubmit={handleSubmit}>
-          <div className="search-row">
-            <input
-              type="text"
-              name="keyword"
-              placeholder="Search by name or keyword..."
-              className="search-input"
-              value={filters.keyword}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="filters-row">
-            <select name="gender" value={filters.gender} onChange={handleChange}>
-              <option value="">All Genders</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="other">Other</option>
-            </select>
-            <select name="age" value={filters.age} onChange={handleChange}>
-              <option value="">All Ages</option>
-              <option value="18-25">18-25</option>
-              <option value="26-30">26-30</option>
-              <option value="31-35">31-35</option>
-              <option value="36-40">36-40</option>
-              <option value="40+">40+</option>
-            </select>
-            <select name="religion" value={filters.religion} onChange={handleChange}>
-              <option value="">Religion/Caste</option>
-              <option value="hindu">Hindu</option>
-              <option value="muslim">Muslim</option>
-              <option value="christian">Christian</option>
-              <option value="sikh">Sikh</option>
-              <option value="buddhist">Buddhist</option>
-              <option value="jain">Jain</option>
-            </select>
-            <select name="location" value={filters.location} onChange={handleChange}>
-              <option value="">Location</option>
-              <option value="mumbai">Mumbai</option>
-              <option value="delhi">Delhi</option>
-              <option value="bangalore">Bangalore</option>
-              <option value="chennai">Chennai</option>
-              <option value="kolkata">Kolkata</option>
-            </select>
-            <button type="submit" className="btn-primary btn-search">
-              🔍 Search
-            </button>
-          </div>
-        </form>
+    <div className="search-container">
+      <div className="search-header">
+        <h2>Find Your Perfect Partner</h2>
+        <p className="search-subtitle">Use the filters below to discover your ideal match</p>
       </div>
-    </section>
+
+      <div className="search-grid">
+        {FilterConfig.map((field) => {
+          let options = field.options || [];
+
+          if (field.name === "state") {
+            options = stateOptions[filters.country] || [];
+          }
+
+          if (field.name === "city") {
+            options = cityOptions[filters.state] || [];
+          }
+
+          return (
+            <div key={field.name} className={`field-wrapper ${field.size || "small"}`}>
+              <FormField
+                {...field}
+                options={options}
+                value={filters[field.name]}
+                onChange={handleChange}
+              />
+              {errors[field.name] && (
+                <p className="error">{errors[field.name]}</p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="search-actions">
+        {liveCount !== null && (
+          <div className="live-count-badge">
+            <span className="live-dot" />
+            <span>
+              <strong>{liveCount}</strong> profile{liveCount !== 1 ? "s" : ""} match your filters
+            </span>
+          </div>
+        )}
+
+        <div className="search-clear-btn">
+          <button className="clear-btn" onClick={handleClear}>
+            Clear Filters
+          </button>
+          <button className="search-btn" onClick={handleSearch}>
+            Search Profiles
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
