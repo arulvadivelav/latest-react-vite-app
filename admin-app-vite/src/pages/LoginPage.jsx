@@ -1,53 +1,26 @@
-import React, { useState } from 'react';
-import InputField from '../components/InputField';
-import { apiRequest } from '../services/AuthServices';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RESPONSE_200, RESPONSE_400 } from '../constants/constants';
+import InputField from '../components/InputField';
 import AlertBox from '../components/Alert';
+import { useAuthForm } from '../hooks/useAuthForm';
 import '../styles/LoginPage.css';
 
 const LoginPage = () => {
-  const [data, setData] = useState({ email_id: '', password: '' });
-  const [errorMsg, setErrorMsg] = useState({ email_id: '', password: '', general: '' });
-  const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState({ message: '', type: '' });
-
   const navigate = useNavigate();
+  const { data, errorMsg, loading, alert, setAlert, submitForm, updateField } =
+    useAuthForm({ email_id: '', password: '' });
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMsg({ email_id: '', password: '', general: '' });
-    setLoading(true);
-
-    try {
-      const result = await apiRequest('login', 'POST', data);
-
-      if (result.status_code === RESPONSE_200) {
-        setAlert({ message: result.message, type: 'success' });
-
-        // Save login status
-        localStorage.setItem("isLoggedIn", "true");
-
-        setTimeout(() => {
-          navigate('/profiles');
-          window.location.reload();
-        }, 2000);
-      } else if (result.status_code === RESPONSE_400) {
-        setAlert({ message: result.message, type: 'error' });
-        setErrorMsg({ general: result.message });
-      } else {
-        setAlert({ message: result.message, type: 'error' });
-      }
-    } catch (error) {
-      setAlert({ message: "Internal server error", type: 'error' });
-    }
-
-    setLoading(false);
+    await submitForm('login', () => {
+      localStorage.setItem("isLoggedIn", "true");
+      navigate('/profiles');
+      window.location.reload();
+    });
   };
 
   return (
     <div className="login-container">
-      
       <div className="overlay"></div>
 
       <div className="login-box">
@@ -69,7 +42,7 @@ const LoginPage = () => {
               placeholder="Enter your email"
               value={data.email_id}
               required={true}
-              onChange={(e) => setData({ ...data, email_id: e.target.value })}
+              onChange={(e) => updateField('email_id', e.target.value)}
             />
             {errorMsg.email_id && <p className="fieldError">{errorMsg.email_id}</p>}
           </div>
@@ -80,7 +53,7 @@ const LoginPage = () => {
               placeholder="Enter your password"
               value={data.password}
               required={true}
-              onChange={(e) => setData({ ...data, password: e.target.value })}
+              onChange={(e) => updateField('password', e.target.value)}
             />
             {errorMsg.password && <p className="fieldError">{errorMsg.password}</p>}
           </div>

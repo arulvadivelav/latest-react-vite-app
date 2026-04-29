@@ -2,12 +2,6 @@
    Register.css — Professional Pink/Rose Theme with Stepper
    ============================================================ */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .register-container {
   position: relative;
   min-height: 100vh;

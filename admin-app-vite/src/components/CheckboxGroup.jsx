@@ -24,4 +24,4 @@ const CheckboxGroup = ({ options = [], values = [], onChange }) => {
     </div>
   );
 };
-export default CheckboxGroup;
+export default React.memo(CheckboxGroup);

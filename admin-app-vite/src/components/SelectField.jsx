@@ -33,4 +33,4 @@ const SelectField = ({
   );
 };
 
-export default SelectField;
+export default React.memo(SelectField);

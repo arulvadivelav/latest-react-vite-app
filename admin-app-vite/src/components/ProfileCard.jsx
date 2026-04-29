@@ -56,4 +56,4 @@ const ProfileCard = ({ profile, onClick }) => {
   );
 };
 
-export default ProfileCard;
+export default React.memo(ProfileCard);

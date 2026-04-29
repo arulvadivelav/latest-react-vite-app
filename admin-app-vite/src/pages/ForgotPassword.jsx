@@ -1,95 +1,87 @@
-import React, { useState } from 'react';
-import InputField from '../components/InputField';
-import { apiRequest } from '../services/AuthServices';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RESPONSE_200, RESPONSE_400 } from '../constants/constants'
-import AlertBox from '../components/Alert'
+import InputField from '../components/InputField';
+import AlertBox from '../components/Alert';
+import { useAuthForm } from '../hooks/useAuthForm';
 import '../styles/LoginPage.css';
 
 const ForgotPasswordPage = () => {
-  const [data, setData] = useState({ email_id: '', otp: '', new_password: '', confirm_password: '' })
-  const [errorMsg, setErrorMsg] = useState({ email_id: '', otp: '', new_password: '', confirm_password: '' });
-  const navigate = useNavigate()
-  const [isRequired, setIsRequired] = useState(true);
-  const [alert, setAlert] = useState({ message: '', type: '' });
+  const navigate = useNavigate();
+  const { data, errorMsg, alert, setAlert, submitForm, updateField } =
+    useAuthForm({ email_id: '', otp: '', new_password: '', confirm_password: '' });
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    setErrorMsg({});
-    try {
-
-      const result = await apiRequest('forgot-password', 'POST', data);
-
-      if (result.status_code === RESPONSE_200) {
-        setAlert({ message: result.message, type: 'success' });
-        setTimeout(() => {
-          navigate('/')
-        }, 2000)
-
-      } else if (result.status_code === RESPONSE_400) {
-        setAlert({ message: result.message, type: 'error' });
-        setErrorMsg(result.message)
-      } else {
-        setAlert({ message: result.message, type: 'error' });
-      }
-    } catch (error) {
-      setAlert({ message: "Internal server error", type: 'error' });
-    }
+    await submitForm('forgot-password', () => {
+      navigate('/');
+    });
   };
+
   return (
-  <div className="login-container">
-    <div className="overlay"></div>
+    <div className="login-container">
+      <div className="overlay"></div>
 
-    <div className="login-box">
-      {alert.message && <AlertBox {...alert} onClose={() => setAlert({})} />}
-
-      <h2>Reset Password</h2>
-
-      <form onSubmit={handleForgotPassword}>
-        <div className="form-group">
-          <InputField
-            type="email"
-            value={data.email_id}
-            required={true}
-            onChange={(e) => setData({ ...data, email_id: e.target.value })}
+      <div className="login-box">
+        {alert.message && (
+          <AlertBox
+            message={alert.message}
+            alertType={alert.type}
+            onClose={() => setAlert({ message: '', type: '' })}
           />
-          {errorMsg.email_id && <p className="fieldError">{errorMsg.email_id}</p>}
-        </div>
+        )}
 
-        <div className="form-group">
-          <label>OTP *</label>
-          <InputField
-            type="password"
-            value={data.otp}
-            required={true}
-            onChange={(e) => setData({ ...data, otp: e.target.value })}
-          />
-          {errorMsg.otp && <p className="fieldError">{errorMsg.otp}</p>}
-        </div>
+        <h2>Reset Password</h2>
 
-        <div className="form-group">
-          <InputField
-            type="password"
-            value={data.new_password}
-            required={true}
-            onChange={(e) => setData({ ...data, new_password: e.target.value })}
-          />
-        </div>
+        <form onSubmit={handleForgotPassword}>
+          <div className="form-group">
+            <InputField
+              type="email"
+              placeholder="Enter your email"
+              value={data.email_id}
+              required={true}
+              onChange={(e) => updateField('email_id', e.target.value)}
+            />
+            {errorMsg.email_id && <p className="fieldError">{errorMsg.email_id}</p>}
+          </div>
 
-        <div className="form-group">
-          <InputField
-            type="password"
-            required={true}
-            value={data.confirm_password}
-            onChange={(e) => setData({ ...data, confirm_password: e.target.value })}
-          />
-        </div>
+          <div className="form-group">
+            <InputField
+              type="password"
+              placeholder="Enter OTP"
+              value={data.otp}
+              required={true}
+              onChange={(e) => updateField('otp', e.target.value)}
+            />
+            {errorMsg.otp && <p className="fieldError">{errorMsg.otp}</p>}
+          </div>
 
-        <button type="submit">Submit</button>
-      </form>
+          <div className="form-group">
+            <InputField
+              type="password"
+              placeholder="New Password"
+              value={data.new_password}
+              required={true}
+              onChange={(e) => updateField('new_password', e.target.value)}
+            />
+            {errorMsg.new_password && <p className="fieldError">{errorMsg.new_password}</p>}
+          </div>
+
+          <div className="form-group">
+            <InputField
+              type="password"
+              placeholder="Confirm Password"
+              value={data.confirm_password}
+              required={true}
+              onChange={(e) => updateField('confirm_password', e.target.value)}
+            />
+            {errorMsg.confirm_password && <p className="fieldError">{errorMsg.confirm_password}</p>}
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default ForgotPasswordPage;
