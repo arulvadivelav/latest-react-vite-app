@@ -43,7 +43,7 @@ const ProfileListModal = ({
                   {/* Image */}
                   <div className="profile-row-avatar">
                     <img
-                      src={item.images || "/default-profile.png"}
+                      src={item.images[0] || "/default-profile.png"}
                       alt={item.name}
                     />
                   </div>
@@ -58,9 +58,7 @@ const ProfileListModal = ({
                   <div className="profile-row-actions">
                     <button
                       className="btn-view-row"
-                      onClick={() =>
-                        window.location.href = `/profile/${item.id}`
-                      }
+                      onClick={() => window.open(`/profile/${item.id}`, "_blank")}
                     >
                       <FaEye />
                       <span>View Profile</span>

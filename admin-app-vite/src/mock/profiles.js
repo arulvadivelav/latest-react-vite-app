@@ -23,7 +23,7 @@ const allProfiles = [
     family_status: "middle",
     contact: "+91 98765 43210",
     email: "priya.sharma@example.com",
-    images: ["https://randomuser.me/api/portraits/women/1.jpg"],
+    images: ["https://randomuser.me/api/portraits/women/1.jpg","https://randomuser.me/api/portraits/women/21.jpg", "https://randomuser.me/api/portraits/women/13.jpg"],
   },
   {
     id: 2,
@@ -47,7 +47,7 @@ const allProfiles = [
     family_status: "upper",
     contact: "+91 98765 43211",
     email: "ananya.krishnan@example.com",
-    images: ["https://randomuser.me/api/portraits/women/2.jpg"],
+    images: ["https://randomuser.me/api/portraits/women/2.jpg", "https://randomuser.me/api/portraits/women/2.jpg", "https://randomuser.me/api/portraits/women/2.jpg"],
   },
   {
     id: 3,
@@ -71,7 +71,7 @@ const allProfiles = [
     family_status: "middle",
     contact: "+91 98765 43212",
     email: "kavitha.rajan@example.com",
-    images: ["https://randomuser.me/api/portraits/women/3.jpg"],
+    images: ["https://randomuser.me/api/portraits/women/3.jpg", "https://randomuser.me/api/portraits/women/3.jpg", "https://randomuser.me/api/portraits/women/3.jpg"],
   },
   {
     id: 4,
@@ -95,7 +95,7 @@ const allProfiles = [
     family_status: "upper",
     contact: "+91 98765 43213",
     email: "lakshmi.nair@example.com",
-    images: ["https://randomuser.me/api/portraits/women/4.jpg"],
+    images: ["https://randomuser.me/api/portraits/women/4.jpg", "https://randomuser.me/api/portraits/women/4.jpg", "https://randomuser.me/api/portraits/women/4.jpg"],
   },
   {
     id: 5,

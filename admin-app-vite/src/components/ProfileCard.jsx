@@ -2,7 +2,7 @@ import React from "react";
 
 const ProfileCard = ({ profile, onClick }) => {
   return (
-    <div className="profile-card-details" onClick={() => onClick(profile)}>
+    <div className="profile-card-details" onClick={onClick}>
       <div className="profile-card-image">
         <img src={profile.images[0]} alt={profile.name} />
       </div>

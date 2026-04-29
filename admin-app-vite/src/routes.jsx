@@ -10,6 +10,7 @@ import ForgotPasswordPage from './pages/ForgotPassword'
 import ProfileCardView from './pages/ProfilePage'
 import AboutUs from './pages/AboutUs'
 import ContactPage from './pages/ContactPage'
+import ProfileDetails from "./pages/ProfileDetails";
 
 const AppRoutes = () => {
   return (
@@ -25,6 +26,8 @@ const AppRoutes = () => {
           <Route path="/about-us" element={< AboutUs />} />
           <Route path="/contact-us" element={<ContactPage />} />
           <Route path="/forgot-password" element={< ForgotPasswordPage />} />
+          <Route path="/profile/:id" element={<ProfileDetails />} />
+
           {/* You can add other routes like Home, Register, etc */}
         </Route>
       </Routes>
