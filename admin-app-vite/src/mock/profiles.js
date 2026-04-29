@@ -21,6 +21,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "middle",
+    contact: "+91 98765 43210",
+    email: "priya.sharma@example.com",
     images: ["https://randomuser.me/api/portraits/women/1.jpg"],
   },
   {
@@ -43,6 +45,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "upper",
+    contact: "+91 98765 43211",
+    email: "ananya.krishnan@example.com",
     images: ["https://randomuser.me/api/portraits/women/2.jpg"],
   },
   {
@@ -65,6 +69,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "middle",
+    contact: "+91 98765 43212",
+    email: "kavitha.rajan@example.com",
     images: ["https://randomuser.me/api/portraits/women/3.jpg"],
   },
   {
@@ -87,6 +93,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "upper",
+    contact: "+91 98765 43213",
+    email: "lakshmi.nair@example.com",
     images: ["https://randomuser.me/api/portraits/women/4.jpg"],
   },
   {
@@ -109,6 +117,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "middle",
+    contact: "+91 98765 43214",
+    email: "meena.sundar@example.com",
     images: ["https://randomuser.me/api/portraits/women/5.jpg"],
   },
   {
@@ -131,6 +141,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "yes",
     family_status: "upper",
+    contact: "+91 98765 43215",
+    email: "rajesh.kumar@example.com",
     images: ["https://randomuser.me/api/portraits/men/1.jpg"],
   },
   {
@@ -153,6 +165,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "yes",
     family_status: "middle",
+    contact: "+91 98765 43216",
+    email: "arjun.menon@example.com",
     images: ["https://randomuser.me/api/portraits/men/2.jpg"],
   },
   {
@@ -175,6 +189,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "upper",
+    contact: "+91 98765 43217",
+    email: "vikram.pillai@example.com",
     images: ["https://randomuser.me/api/portraits/men/3.jpg"],
   },
   {
@@ -197,6 +213,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "middle",
+    contact: "+91 98765 43218",
+    email: "suresh.babu@example.com",
     images: ["https://randomuser.me/api/portraits/men/4.jpg"],
   },
   {
@@ -219,6 +237,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "middle",
+    contact: "+91 98765 43219",
+    email: "deepa.iyer@example.com",
     images: ["https://randomuser.me/api/portraits/women/10.jpg"],
   },
   {
@@ -241,6 +261,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "upper",
+    contact: "+91 98765 43220",
+    email: "karthik.venkat@example.com",
     images: ["https://randomuser.me/api/portraits/men/5.jpg"],
   },
   {
@@ -263,6 +285,8 @@ const allProfiles = [
     smoking: "no",
     drinking: "no",
     family_status: "middle",
+    contact: "+91 98765 43221",
+    email: "nithya.ramesh@example.com",
     images: ["https://randomuser.me/api/portraits/women/12.jpg"],
   },
 ];
@@ -270,7 +294,7 @@ const allProfiles = [
 /**
  * Simulated API: filter + paginate profiles
  */
-export const fetchProfiles = ({ filters = {}, page = 1, itemsPerPage =4 }) => {
+export const fetchProfiles = ({ filters = {}, page = 1, itemsPerPage = 4 }) => {
   let results = [...allProfiles];
 
   // Apply filters
@@ -301,6 +325,7 @@ export const fetchProfiles = ({ filters = {}, page = 1, itemsPerPage =4 }) => {
 
   if (filters.city)
     results = results.filter(p => p.location.city === filters.city);
+    
   const totalItems = results.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
   const safePage = Math.min(Math.max(1, page), totalPages);

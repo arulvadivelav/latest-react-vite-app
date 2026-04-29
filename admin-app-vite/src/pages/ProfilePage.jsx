@@ -44,7 +44,7 @@ const ProfilePage = () => {
   const scrollToGridTop = () => {
     if (!resultsRef.current) return;
 
-    const yOffset = -170;
+    const yOffset = -155;
     const y =
       resultsRef.current.getBoundingClientRect().top +
       window.pageYOffset +
