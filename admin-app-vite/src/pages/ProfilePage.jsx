@@ -1,12 +1,12 @@
 // Profile.jsx
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import SearchSection from "../components/SearchSection";
 import ProfileCard from "../components/ProfileCard";
 import ProfileModal from "../components/ProfileModel";
 import { fetchProfiles } from "../mock/profiles";
 import "../styles/Profile.css";
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 10;
 
 const ProfilePage = () => {
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -26,19 +26,39 @@ const ProfilePage = () => {
     setCurrentPage(result.page);
   }, []);
 
-  const handleSearch = (filters) => {
-    runSearch(filters, 1);
-  };
-
   const handleClear = () => {
     setProfileData(null);
     setCurrentFilters({});
     setCurrentPage(1);
   };
+  const handleSearch = (filters) => {
+    runSearch(filters, 1);
+
+    setTimeout(() => {
+      scrollToGridTop();
+    }, 100);
+  };
+
+  const resultsRef = useRef(null);
+  
+  const scrollToGridTop = () => {
+    if (!resultsRef.current) return;
+
+    const yOffset = -170;
+    const y =
+      resultsRef.current.getBoundingClientRect().top +
+      window.pageYOffset +
+      yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
 
   const handlePageChange = (page) => {
     runSearch(currentFilters, page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    setTimeout(() => {
+      scrollToGridTop();
+    }, 100);
   };
 
   const handleLike = (profileId) => {
@@ -113,7 +133,7 @@ const ProfilePage = () => {
             </div>
           ) : (
             <>
-              <div className="profile-card-grid">
+              <div className="profile-card-grid" ref={resultsRef}>
                 {profileData.items.map((profile) => (
                   <ProfileCard
                     key={profile.id}

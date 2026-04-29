@@ -270,7 +270,7 @@ const allProfiles = [
 /**
  * Simulated API: filter + paginate profiles
  */
-export const fetchProfiles = ({ filters = {}, page = 1, itemsPerPage = 4 }) => {
+export const fetchProfiles = ({ filters = {}, page = 1, itemsPerPage =4 }) => {
   let results = [...allProfiles];
 
   // Apply filters
