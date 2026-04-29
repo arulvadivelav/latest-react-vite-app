@@ -1,65 +1,81 @@
-import React, { useEffect } from "react";
-import ProfileListItem from "./ProfileListItem";
-import { FaTimes } from "react-icons/fa";
+import React from "react";
+import { FaTimes, FaEye } from "react-icons/fa";
 
-const ProfilesListModal = ({ isOpen, title, profiles, onClose }) => {
-  console.log("Modal received props:", { isOpen, title, profilesCount: profiles?.length });
-
-  useEffect(() => {
-    if (isOpen) {
-      console.log("Modal should be open");
-      document.body.style.overflow = 'hidden';
-      
-      const handleEsc = (e) => {
-        if (e.key === 'Escape') {
-          console.log("ESC pressed - closing modal");
-          onClose();
-        }
-      };
-      window.addEventListener('keydown', handleEsc);
-      
-      return () => {
-        document.body.style.overflow = 'unset';
-        window.removeEventListener('keydown', handleEsc);
-      };
-    }
-  }, [isOpen, onClose]);
-
-  if (!isOpen) {
-    console.log("Modal is closed, returning null");
-    return null;
-  }
-
-  console.log("Rendering modal with profiles:", profiles);
+const ProfileListModal = ({
+  isOpen,
+  onClose,
+  title = "Profiles List",
+  subtitle = "View all matched profiles",
+  profiles = [],
+}) => {
+  if (!isOpen) return null;
 
   return (
     <div className="modal-wrapper">
+      {/* Overlay */}
       <div className="modal-overlay" onClick={onClose}></div>
+
+      {/* Modal */}
       <div className="modal-container">
+        {/* Header */}
         <div className="modal-header">
           <div className="modal-header-content">
-            <h2>{title || "Profiles"}</h2>
-            <p className="modal-subtitle">
-              {profiles?.length || 0} {profiles?.length === 1 ? 'Profile' : 'Profiles'} Found
-            </p>
+            <h2>{title}</h2>
+            <p className="modal-subtitle">{subtitle}</p>
           </div>
+
           <button className="modal-close-btn" onClick={onClose}>
             <FaTimes />
           </button>
         </div>
 
+        {/* Body */}
         <div className="modal-body">
-          {!profiles || profiles.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-icon">📭</div>
-              <p>No profiles available</p>
-              <p className="empty-subtext">Check back later for updates</p>
+          {profiles.length > 0 ? (
+            <div className="profiles-rows-list">
+              {profiles.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={`profile-row-item ${
+                    index % 2 === 0 ? "even" : "odd"
+                  }`}
+                >
+                  {/* Image */}
+                  <div className="profile-row-avatar">
+                    <img
+                      src={item.images || "/default-profile.png"}
+                      alt={item.name}
+                    />
+                  </div>
+
+                  {/* Info */}
+                  <div className="profile-row-info">
+                    <h4 className="profile-row-name">{item.name}</h4>
+                    <span className="profile-row-id">ID: {item.id}</span>
+                  </div>
+
+                  {/* Action */}
+                  <div className="profile-row-actions">
+                    <button
+                      className="btn-view-row"
+                      onClick={() =>
+                        window.location.href = `/profile/${item.id}`
+                      }
+                    >
+                      <FaEye />
+                      <span>View Profile</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
-            <div className="profiles-rows-list">
-              {profiles.map((profile, index) => (
-                <ProfileListItem key={profile.id} profile={profile} index={index} />
-              ))}
+            <div className="empty-state">
+              <div className="empty-icon">💖</div>
+              <p>No profiles found</p>
+              <span className="empty-subtext">
+                New profiles will appear here soon.
+              </span>
             </div>
           )}
         </div>
@@ -68,4 +84,4 @@ const ProfilesListModal = ({ isOpen, title, profiles, onClose }) => {
   );
 };
 
-export default ProfilesListModal;
+export default ProfileListModal;

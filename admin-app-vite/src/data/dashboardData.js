@@ -9,10 +9,10 @@ import allProfiles from "../mock/profiles";
 const currentUserId = 100; // dummy logged-in user
 
 // 🔥 Mock relationships (simulate real matrimony activity)
-const shortlistedByYouIds = [1, 3, 5];
+const shortlistedByYouIds = [1, ];
 const shortlistedYouIds = [2, 4];
 
-const viewedByYouIds = [1, 2, 6, 7];
+const viewedByYouIds = [1, 2, 6, 7, 3, 5];
 const viewedYouIds = [3, 8];
 
 const requestedConnectionIds = [9, 10];

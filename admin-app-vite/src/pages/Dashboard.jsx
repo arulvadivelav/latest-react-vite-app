@@ -3,7 +3,7 @@ import DashboardCard from "../components/DashboardCard";
 import ProfilesListModal from "../components/ProfilesListModal";
 import { dashboardItems } from "../configs/DashboardConfig";
 import { getDashboardData } from "../data/dashboardData";
-import "../styles/dashboard.css";
+import "../styles/Dashboard.css";
 
 const MatrimonyDashboard = () => {
   const [selectedKey, setSelectedKey] = useState(null);
@@ -40,6 +40,7 @@ const MatrimonyDashboard = () => {
 
         {selectedKey && (
           <ProfilesListModal
+            isOpen={!!selectedKey}
             title={selectedItem?.label}
             profiles={dashboardData[selectedKey] || []}
             onClose={() => setSelectedKey(null)}
