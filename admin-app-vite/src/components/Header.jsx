@@ -144,9 +144,9 @@ const Header = () => {
 
         <ul className="sidebar-menu">
           <li onClick={() => navigate("/dashboard")}>Dashboard</li>
-          <li onClick={() => navigate("/edit-profile")}>Edit Profile</li>
-          <li onClick={() => navigate("/notifications")}>Notifications</li>
-          <li onClick={() => navigate("/settings")}>Settings</li>
+          <li onClick={() => navigate("/update-profile/1")}>Edit Profile</li>
+          {/* <li onClick={() => navigate("/notifications")}>Notifications</li> */}
+          {/* <li onClick={() => navigate("/settings")}>Settings</li> */}
           <li onClick={() => navigate("/privacy")}>Privacy</li>
           <li
             className="logout-item"

@@ -9,10 +9,6 @@ import Footer from '../components/Footer';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
-  const handleSearch = (filters) => {
-    console.log('Searching with filters:', filters);
-    alert(`Searching for: ${filters.keyword || 'all profiles'} with filters applied!`);
-  };
 
   return (
     <div className="homepage">
