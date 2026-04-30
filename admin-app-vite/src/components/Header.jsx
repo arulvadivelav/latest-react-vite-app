@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/components/Header.css";
 import logo from "../assets/logo/new-logo.png";
+import { FaTimes } from "react-icons/fa";
+
 
 const Header = () => {
   const navigate = useNavigate();
@@ -127,12 +129,8 @@ const Header = () => {
 
         <div className="sidebar-top">
           <h3>Settings</h3>
-
-          <button
-            className="close-btn"
-            onClick={closeSidebar}
-          >
-            ×
+          <button className="close-btn" onClick={closeSidebar}>
+            <FaTimes />
           </button>
         </div>
 
@@ -147,7 +145,7 @@ const Header = () => {
           <li onClick={() => navigate("/update-profile/1")}>Edit Profile</li>
           {/* <li onClick={() => navigate("/notifications")}>Notifications</li> */}
           {/* <li onClick={() => navigate("/settings")}>Settings</li> */}
-          <li onClick={() => navigate("/privacy")}>Privacy</li>
+          <li onClick={() => navigate("/privacy-policy")}>Privacy</li>
           <li
             className="logout-item"
             onClick={handleLogout}

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { FaTimes } from "react-icons/fa";
 import "../styles/UpdateProfile.css";
 
 // Options data
@@ -142,54 +143,56 @@ const UpdateProfile = () => {
       <div className="profile-card">
         <form onSubmit={(e) => e.preventDefault()} className="profile-form">
           {/* Image Upload Section */}
-          <div className="image-upload-section">
+            <div className="image-upload-section">
+
             <div className="profile-image-wrapper">
-              {displayData.images.length > 0 ? (
-                <img 
-                  src={displayData.images[displayData.mainImageIndex]} 
-                  alt="Profile"
-                  className="main-profile-image"
+                {displayData.images.length > 0 ? (
+                <img
+                    src={displayData.images[displayData.mainImageIndex]}
+                    alt="Profile"
+                    className="main-profile-image"
                 />
-              ) : (
+                ) : (
                 <div className="profile-image-placeholder">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9b8e7c" strokeWidth="1.5">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9b8e7c" strokeWidth="1.5">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
-                  </svg>
+                    </svg>
                 </div>
-              )}
-              {isEditing && (
-                <button 
-                  type="button" 
-                  className="upload-image-btn"
-                  onClick={() => setShowImageModal(true)}
+                )}
+
+                {isEditing && (
+                <button
+                    type="button"
+                    className="upload-image-btn"
+                    onClick={() => setShowImageModal(true)}
                 >
-                  Upload Photos
+                    Upload Photos
                 </button>
-              )}
+                )}
             </div>
+
             <p className="image-hint">Upload up to 3 photos</p>
-          </div>
-            {!isEditing && (
-            <button className="edit-profile-btn" onClick={handleEdit}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M17 3l4 4-7 7H10v-4l7-7z" />
-                <path d="M4 20h16" />
-              </svg>
-              Edit Profile
-            </button>
-          )}
-          {/* Action Buttons - Show only when editing */}
-          {isEditing && (
-            <div className="form-actions">
-              <button type="button" className="save-btn" onClick={handleSave}>
-                Save Changes
-              </button>
-              <button type="button" className="cancel-btn" onClick={handleCancel}>
-                Cancel
-              </button>
+
+            {/* Buttons Section */}
+            <div className="button-group">
+                {!isEditing ? (
+                <button className="edit-profile-btn" onClick={handleEdit}>
+                    Edit Profile
+                </button>
+                ) : (
+                <>
+                    <button className="save-btn" onClick={handleSave}>
+                    Save
+                    </button>
+                    <button className="cancel-btn" onClick={handleCancel}>
+                    Cancel
+                    </button>
+                </>
+                )}
             </div>
-          )}
+
+            </div>
           {/* Personal Information */}
           <div className="form-section">
             <h2>Personal Information</h2>
@@ -413,7 +416,9 @@ const UpdateProfile = () => {
           <div className="image-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Upload Photos</h3>
-              <button className="close-modal" onClick={() => setShowImageModal(false)}>×</button>
+                <button className="close-modal" onClick={() => setShowImageModal(false)}>
+                    <FaTimes />
+                </button>
             </div>
             
             <div className="modal-body">
