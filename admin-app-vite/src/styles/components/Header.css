@@ -168,11 +168,24 @@
 }
 
 .close-btn {
+  background: none;
   border: none;
-  background: transparent;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
-  color: #666;
+  color: #c93e64;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.close-btn:hover {
+  background: rgba(201, 62, 100, 0.1);
+  transform: rotate(90deg);
 }
 
 /* ================= USER CARD ================= */
@@ -258,7 +271,11 @@
   .logo-text {
     font-size: 16px;
   }
-
+  .modal-close-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
   .nav-links {
     gap: 12px;
   }

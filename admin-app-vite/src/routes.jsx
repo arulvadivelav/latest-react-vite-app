@@ -12,6 +12,8 @@ import ProfileCardView from './pages/ProfilePage'
 import AboutUs from './pages/AboutUs'
 import ContactPage from './pages/ContactPage'
 import ProfileDetails from "./pages/ProfileDetails";
+import UpdateProfile from "./pages/UpdateProfile";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const AppRoutes = () => {
   return (
@@ -31,7 +33,8 @@ const AppRoutes = () => {
           <Route path="/contact-us" element={<ContactPage />} />
           <Route path="/forgot-password" element={< ForgotPasswordPage />} />
           <Route path="/profile/:id" element={<ProfileDetails />} />
-
+          <Route path="/update-profile/:id" element={<UpdateProfile />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           {/* You can add other routes like Home, Register, etc */}
         </Route>
       </Routes>
