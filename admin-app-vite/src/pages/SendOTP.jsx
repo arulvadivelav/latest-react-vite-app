@@ -13,7 +13,7 @@ const SendOtpPage = () => {
 
   const navigate = useNavigate();
   const { data, loading, alert, setAlert, submitForm, updateField } =
-    useAuthForm({ email_id: '', otp: '' });
+    useAuthForm({ email_id: '', phone:'', password:'', confirm_password:'', otp: '' });
 
   const [isOtpSent, setIsOtpSent] = useState(false);
 
@@ -58,6 +58,36 @@ const SendOtpPage = () => {
               value={data.email_id}
               required={true}
               onChange={(e) => updateField('email_id', e.target.value)}
+              disabled={isOtpSent}
+            />
+          </div>
+          <div className="form-group">
+            <InputField
+              type="phone"
+              placeholder="Enter your phone number"
+              value={data.phone}
+              required={true}
+              onChange={(e) => updateField('phone', e.target.value)}
+              disabled={isOtpSent}
+            />
+          </div>
+          <div className="form-group">
+            <InputField
+              type="password"
+              placeholder="Enter your password"
+              value={data.password}
+              required={true}
+              onChange={(e) => updateField('password', e.target.value)}
+              disabled={isOtpSent}
+            />
+          </div>
+          <div className="form-group">
+            <InputField
+              type="confirm_password"
+              placeholder="Enter your confirm password"
+              value={data.confirm_password}
+              required={true}
+              onChange={(e) => updateField('confirm_password', e.target.value)}
               disabled={isOtpSent}
             />
           </div>

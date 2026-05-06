@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/onboarding/LoginPage';
+import RegisterSendOTP from './pages/onboarding/RegisterSendOTP';
+import VerifyOtpPage from './pages/onboarding/VerifyOtpPage';
 import HomePage from './pages/HomePage'
-import SendOtpPage from './pages/SendOTP';
 import DashboardPage from './pages/Dashboard';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPassword'
@@ -18,10 +19,13 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={< HomePage />} />
+
+          <Route path="/register" element={<RegisterPage/>} />
+          <Route path="/register-send-otp" element={<RegisterSendOTP/>} />
+          <Route path="/verify-otp" element={<VerifyOtpPage/>} />
+
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/send-otp" element={<SendOtpPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/register" element={< RegisterPage />} />
           <Route path="/profiles" element={< ProfileCardView />} />
           <Route path="/about-us" element={< AboutUs />} />
           <Route path="/contact-us" element={<ContactPage />} />

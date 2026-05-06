@@ -82,7 +82,7 @@ const Header = () => {
                   <button
                     className="btn-primary"
                     onClick={() => {
-                      navigate("/register");
+                      navigate("/register-send-otp");
                       closeMobileMenu();
                     }}
                   >

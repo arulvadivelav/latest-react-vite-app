@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000/v1/"
+const BASE_URL = "http://10.179.135.172:8000/v1/"
 
 export const apiRequest = async (endpoint, method = "GET", body = null) => {
   const config = {
@@ -12,9 +12,8 @@ export const apiRequest = async (endpoint, method = "GET", body = null) => {
     config.body = JSON.stringify(body);
   }
 
-  // const response = await fetch(`${BASE_URL}${endpoint}`, config)
-  const data = {"status_code": 200}
-  // const data = await response.json();
+  const response = await fetch(`${BASE_URL}${endpoint}`, config)
+  const data = await response.json();
 
   return data
 };

@@ -87,7 +87,6 @@
   color: #ff6f91;
   margin-bottom: 8px;
   letter-spacing: 0.5px;
-  text-transform: uppercase;
 }
 
 .card-details p {
@@ -569,7 +568,6 @@
   font-weight: 600;
   color: #888;
   letter-spacing: 0.4px;
-  text-transform: uppercase;
 }
 
 .input-field {

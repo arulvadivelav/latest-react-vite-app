@@ -181,7 +181,6 @@ align-items: center;
 .detail-row p {
   color: #555;
   font-size: 15px;
-  text-transform: capitalize;
   margin: 0;
 }
 
