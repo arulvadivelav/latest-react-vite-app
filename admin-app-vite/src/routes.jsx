@@ -2,12 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
 import LoginPage from './pages/onboarding/LoginPage';
-import RegisterSendOTP from './pages/onboarding/RegisterSendOTP';
+import SendOTP from './pages/onboarding/SendOTP';
 import VerifyOtpPage from './pages/onboarding/VerifyOtpPage';
 import HomePage from './pages/HomePage'
 import DashboardPage from './pages/Dashboard';
-import RegisterPage from './pages/RegisterPage';
-import ForgotPasswordPage from './pages/ForgotPassword'
+import RegisterPage from './pages/onboarding/RegisterPage';
+import ForgotPasswordPage from './pages/onboarding/ForgotPassword'
 import ProfileCardView from './pages/ProfilePage'
 import AboutUs from './pages/AboutUs'
 import ContactPage from './pages/ContactPage'
@@ -23,7 +23,7 @@ const AppRoutes = () => {
           <Route index element={< HomePage />} />
 
           <Route path="/register" element={<RegisterPage/>} />
-          <Route path="/register-send-otp" element={<RegisterSendOTP/>} />
+          <Route path="/send-otp" element={<SendOTP/>} />
           <Route path="/verify-otp" element={<VerifyOtpPage/>} />
 
           <Route path="/login" element={<LoginPage />} />

@@ -1,4 +1,4 @@
-const BASE_URL = "http://10.179.135.172:8000/v1/"
+const BASE_URL = "http://192.168.3.122:8000/v1/"
 
 export const apiRequest = async (endpoint, method = "GET", body = null) => {
   const config = {

@@ -58,17 +58,15 @@ const LoginPage = () => {
             {errorMsg.password && <p className="fieldError">{errorMsg.password}</p>}
           </div>
 
-          {errorMsg.general && <p className="fieldError">{errorMsg.general}</p>}
-
           <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
         <div className="links">
-          <a href="/send-otp?type=forgot">Forgot Password?</a>
+          <a href="/send-otp?purpose=forgot_password">Forgot Password?</a>
           <span>|</span>
-          <a href="/send-otp?type=register">Register</a>
+          <a href="/send-otp?purpose=register">Register</a>
         </div>
       </div>
     </div>

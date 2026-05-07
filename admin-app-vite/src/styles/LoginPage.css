@@ -255,3 +255,9 @@ button:disabled {
 .invalid {
   color: #ef4444;
 }
+
+.form-verify-otp {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
