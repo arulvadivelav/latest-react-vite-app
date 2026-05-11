@@ -31,6 +31,7 @@ const VerifyOtpPage = () => {
     updateField
   } = useAuthForm({
     email_id: email_id || '',
+    password: password || '',
     otp: '',
     purpose: purpose || '',
   });
@@ -48,10 +49,8 @@ const VerifyOtpPage = () => {
     }
 
     await submitForm('verify-otp', () => {
-
       // REGISTER FLOW
       if (purpose === "register") {
-
         navigate('/register', {
           state: {
             email_id,
@@ -59,15 +58,14 @@ const VerifyOtpPage = () => {
             password,
           }
         });
-
       }
 
       // FORGOT PASSWORD FLOW
       else if (purpose === "forgot_password") {
-
         navigate('/reset-password', {
           state: {
             email_id,
+            password
           }
         });
 

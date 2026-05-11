@@ -330,7 +330,11 @@ const SendOtpPage = () => {
               : 'Send OTP'}
 
           </button>
-
+          <div className="links">
+            <a href="/login">Login</a>
+            <span>|</span>
+            <a href="/send-otp?purpose=forgot_password">Forgot Password?</a>
+          </div>
         </form>
 
       </div>

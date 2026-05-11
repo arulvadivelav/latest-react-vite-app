@@ -1,483 +1,427 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import {
   CircularProgress,
   Snackbar,
   Alert,
+  Stepper,
+  Step,
+  StepLabel,
+  Box,
+  Paper,
+  Container,
+  Typography,
+  IconButton
 } from "@mui/material";
 import {
-  ArrowForward,
-  ArrowBack,
-  LockOutlined,
-  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle
 } from "@mui/icons-material";
+
+import BasicDetails from "../../components/register/BasicDetails";
+import HoroscopeDetails from "../../components/register/HoroscopeDetails";
+import FamilyDetails from "../../components/register/FamilyDetails";
+import PhotoUpload from "../../components/register/PhotoUpload";
+
+import {
+  getCastes,
+  getSubCastes,
+  getCities,
+  getEducations,
+  getOccupations,
+  submitProfile
+} from "../../services/registerService";
+
 import "../../styles/Register.css";
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [completedSteps, setCompletedSteps] = useState([]);
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success"
+  });
+
+  const [dropdowns, setDropdowns] = useState({
+    castes: [],
+    subCastes: [],
+    educations: [],
+    occupations: [],
+    cities: []
+  });
 
   const [form, setForm] = useState({
-    // Basic Info
-    firstName: "",
-    lastName: "",
-    dateOfBirth: "",
+    profile_created_for: "",
+    first_name: "",
+    last_name: "",
     gender: "",
-    maritalStatus: "",
+    marital_status: "",
+    dob: "",
+    time_of_birth: "",
+    place_of_birth: "",
     religion: "",
-    subcaste: "",
-    // Profile Details
-    phone: "",
-    occupation: "",
-    interests: [],
-    languages: [],
-    // Preferences
+    caste: "",
+    sub_caste: "",
+    mother_tongue: "",
     height: "",
     weight: "",
-    partnerReligion: "",
     education: "",
-    expectations: [],
-    lifestyle: []
+    occupation: "",
+    annual_income: "",
+    current_city: "",
+    about_me: "",
+    rasi: "",
+    nakshatra: "",
+    nakshatra_pada: "",
+    lagnam: "",
+    dosham: false,
+    dosham_details: "",
+    father_name: "",
+    father_occupation: "",
+    mother_name: "",
+    mother_occupation: "",
+    siblings_count: "",
+    family_type: "",
+    family_status: "",
+    photos: []
   });
 
   const [errors, setErrors] = useState({});
 
   const steps = [
-    { name: "Basic Info", desc: "Personal information" },
-    { name: "Profile Details", desc: "Professional details" },
-    { name: "Preferences", desc: "Expectations" }
+    { label: "Basic Details", description: "Personal information" },
+    { label: "Horoscope", description: "Astrological details" },
+    { label: "Family", description: "Family background" },
+    { label: "Photos", description: "Upload your photos" }
   ];
 
-  const validateStep = () => {
-    const newErrors = {};
-    
-    if (activeStep === 0) {
-      if (!form.firstName.trim()) newErrors.firstName = "First name is required";
-      if (!form.lastName.trim()) newErrors.lastName = "Last name is required";
-      if (!form.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
-      if (!form.gender) newErrors.gender = "Gender is required";
-      if (!form.maritalStatus) newErrors.maritalStatus = "Marital status is required";
-      if (!form.religion) newErrors.religion = "Religion is required";
-      if (!form.subcaste) newErrors.subcaste = "Subcaste is required";
-    } 
-    else if (activeStep === 1) {
-      if (!form.phone) newErrors.phone = "Phone number is required";
-      else if (!/^\d{10}$/.test(form.phone)) newErrors.phone = "Enter valid 10-digit phone number";
-      if (!form.occupation) newErrors.occupation = "Occupation is required";
-    }
-    else if (activeStep === 2) {
-      if (!form.height) newErrors.height = "Height is required";
-      else if (form.height < 100 || form.height > 250) newErrors.height = "Height must be between 100-250 cm";
-      if (!form.weight) newErrors.weight = "Weight is required";
-      else if (form.weight < 30 || form.weight > 200) newErrors.weight = "Weight must be between 30-200 kg";
-      if (!form.education) newErrors.education = "Education is required";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  useEffect(() => {
+    loadInitialData();
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    
-    if (type === "checkbox") {
-      const currentValues = form[name] || [];
-      if (checked) {
-        setForm({ ...form, [name]: [...currentValues, value] });
-      } else {
-        setForm({ ...form, [name]: currentValues.filter(v => v !== value) });
-      }
-    } else {
-      setForm({ ...form, [name]: value });
-      if (errors[name]) {
-        setErrors({ ...errors, [name]: "" });
-      }
+  useEffect(() => {
+    if (form.caste) {
+      fetchSubCastes(form.caste);
     }
-  };
+  }, [form.caste]);
 
-  const handleNext = () => {
-    if (validateStep()) {
-      if (!completedSteps.includes(activeStep)) {
-        setCompletedSteps([...completedSteps, activeStep]);
-      }
-      
-      if (activeStep === steps.length - 1) {
-        handleSubmit();
-      } else {
-        setActiveStep(prev => prev + 1);
-      }
-    } else {
-      setSnackbar({
-        open: true,
-        message: "Please fill all required fields correctly",
-        severity: "warning"
-      });
-    }
-  };
-
-  const handleBack = () => {
-    setActiveStep(prev => prev - 1);
-  };
-
-  const handleStepClick = (index) => {
-    if (index <= activeStep || completedSteps.includes(index - 1)) {
-      setActiveStep(index);
-    }
-  };
-
-  const handleSubmit = async () => {
+  const loadInitialData = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/register/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      const [casteRes, educationRes, occupationRes, cityRes] = await Promise.all([
+        getCastes(),
+        getEducations(),
+        getOccupations(),
+        getCities()
+      ]);
+
+      setDropdowns({
+        castes: casteRes?.data || [],
+        subCastes: [],
+        educations: educationRes?.data || [],
+        occupations: occupationRes?.data || [],
+        cities: cityRes?.data || []
       });
-      
-      if (response.ok) {
-        setSnackbar({ 
-          open: true, 
-          message: "Registration successful! Redirecting...", 
-          severity: "success" 
-        });
-        setTimeout(() => navigate("/home"), 2000);
-      } else {
-        const data = await response.json();
-        setSnackbar({ 
-          open: true, 
-          message: data.message || "Registration failed", 
-          severity: "error" 
-        });
-      }
-    } catch {
-      setSnackbar({ 
-        open: true, 
-        message: "Something went wrong. Please try again.", 
-        severity: "error" 
+    } catch (error) {
+      console.error("Error loading initial data:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to load form data",
+        severity: "error"
       });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar({ ...snackbar, open: false });
+  const fetchSubCastes = async (casteId) => {
+    try {
+      const response = await getSubCastes(casteId);
+      setDropdowns((prev) => ({
+        ...prev,
+        subCastes: response?.data || []
+      }));
+    } catch (error) {
+      console.error("Error loading sub-castes:", error);
+    }
   };
 
-  // Render Step 0
-  const renderBasicInfo = () => (
-    <div className="form-grid">
-      <div className="input-group">
-        <label>First Name <span className="required-star">*</span></label>
-        <input
-          type="text"
-          name="firstName"
-          className="input-field"
-          value={form.firstName}
-          onChange={handleChange}
-          placeholder="Enter first name"
-        />
-        {errors.firstName && <div className="field-error">{errors.firstName}</div>}
-      </div>
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
 
-      <div className="input-group">
-        <label>Last Name <span className="required-star">*</span></label>
-        <input
-          type="text"
-          name="lastName"
-          className="input-field"
-          value={form.lastName}
-          onChange={handleChange}
-          placeholder="Enter last name"
-        />
-        {errors.lastName && <div className="field-error">{errors.lastName}</div>}
-      </div>
+  const handlePhotoUpload = (files) => {
+    setForm((prev) => ({
+      ...prev,
+      photos: files
+    }));
+  };
 
-      <div className="input-group">
-        <label>Date of Birth <span className="required-star">*</span></label>
-        <input
-          type="date"
-          name="dateOfBirth"
-          className="input-field"
-          value={form.dateOfBirth}
-          onChange={handleChange}
-        />
-        {errors.dateOfBirth && <div className="field-error">{errors.dateOfBirth}</div>}
-      </div>
+  const validateStep = () => {
+    const newErrors = {};
+    
+    if (activeStep === 0) {
+      if (!form.first_name) newErrors.first_name = "First name is required";
+      if (!form.gender) newErrors.gender = "Gender is required";
+      if (!form.marital_status) newErrors.marital_status = "Marital status is required";
+      if (!form.dob) newErrors.dob = "Date of birth is required";
+      
+      // Age validation (minimum 18 years)
+      if (form.dob) {
+        const birthDate = new Date(form.dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        if (age < 18) newErrors.dob = "You must be at least 18 years old";
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-      <div className="input-group">
-        <label>Gender <span className="required-star">*</span></label>
-        <select name="gender" className="input-field" value={form.gender} onChange={handleChange}>
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-        {errors.gender && <div className="field-error">{errors.gender}</div>}
-      </div>
+  const handleNext = () => {
+    if (validateStep()) {
+      setActiveStep((prev) => prev + 1);
+    }
+  };
 
-      <div className="input-group">
-        <label>Marital Status <span className="required-star">*</span></label>
-        <select name="maritalStatus" className="input-field" value={form.maritalStatus} onChange={handleChange}>
-          <option value="">Select Marital Status</option>
-          <option value="single">Single</option>
-          <option value="divorced">Divorced</option>
-          <option value="widowed">Widowed</option>
-        </select>
-        {errors.maritalStatus && <div className="field-error">{errors.maritalStatus}</div>}
-      </div>
+  const handleBack = () => {
+    setActiveStep((prev) => prev - 1);
+  };
 
-      <div className="input-group">
-        <label>Religion <span className="required-star">*</span></label>
-        <select name="religion" className="input-field" value={form.religion} onChange={handleChange}>
-          <option value="">Select Religion</option>
-          <option value="hindu">Hindu</option>
-          <option value="christian">Christian</option>
-        </select>
-        {errors.religion && <div className="field-error">{errors.religion}</div>}
-      </div>
-
-      <div className="input-group form-field-full">
-        <label>Subcaste <span className="required-star">*</span></label>
-        <select name="subcaste" className="input-field" value={form.subcaste} onChange={handleChange}>
-          <option value="">Select Subcaste</option>
-          <option value="karukku_pattaiyathar">Karukku Pattaiyathar</option>
-          <option value="melnattar">Melnattar</option>
-          <option value="nattathi_nadar">Nattathi Nadar</option>
-          <option value="kodikal_nadar">Kodikal Nadar</option>
-          <option value="kalla_nadar">Kalla Nadar</option>
-          <option value="gramani">Gramani</option>
-          <option value="chetty_nadar">Chetty Nadar</option>
-          <option value="pandya_vamsam_nadars">Pandya Vamsam Nadars</option>
-          <option value="kongu_nadar">Kongu Nadar</option>
-        </select>
-        {errors.subcaste && <div className="field-error">{errors.subcaste}</div>}
-      </div>
-    </div>
-  );
-
-  // Render Step 1
-  const renderProfileDetails = () => (
-    <div className="form-grid">
-      <div className="input-group">
-        <label>Phone Number <span className="required-star">*</span></label>
-        <input
-          type="tel"
-          name="phone"
-          className="input-field"
-          value={form.phone}
-          onChange={handleChange}
-          placeholder="10-digit mobile number"
-        />
-        {errors.phone && <div className="field-error">{errors.phone}</div>}
-      </div>
-
-      <div className="input-group">
-        <label>Occupation <span className="required-star">*</span></label>
-        <select name="occupation" className="input-field" value={form.occupation} onChange={handleChange}>
-          <option value="">Select Occupation</option>
-          <option value="engineer">Software Engineer</option>
-          <option value="doctor">Doctor</option>
-          <option value="teacher">Teacher</option>
-          <option value="business">Business</option>
-          <option value="student">Student</option>
-          <option value="other">Other</option>
-        </select>
-        {errors.occupation && <div className="field-error">{errors.occupation}</div>}
-      </div>
-
-      <div className="input-group form-field-full">
-        <div className="checkbox-group">
-          <div className="checkbox-label-main">Interests</div>
-          <div className="checkbox-options">
-            {["Travel", "Reading", "Movies", "Cooking", "Gaming"].map(interest => (
-              <label key={interest} className="checkbox-option">
-                <input
-                  type="checkbox"
-                  name="interests"
-                  value={interest.toLowerCase()}
-                  checked={form.interests.includes(interest.toLowerCase())}
-                  onChange={handleChange}
-                />
-                {interest}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="input-group form-field-full">
-        <div className="checkbox-group">
-          <div className="checkbox-label-main">Languages Known</div>
-          <div className="checkbox-options">
-            {["English", "Hindi", "Tamil", "Telugu", "Spanish"].map(lang => (
-              <label key={lang} className="checkbox-option">
-                <input
-                  type="checkbox"
-                  name="languages"
-                  value={lang.toLowerCase()}
-                  checked={form.languages.includes(lang.toLowerCase())}
-                  onChange={handleChange}
-                />
-                {lang}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // Render Step 2
-  const renderPreferences = () => (
-    <div className="form-grid">
-      <div className="input-group">
-        <label>Height (cm) <span className="required-star">*</span></label>
-        <input
-          type="number"
-          name="height"
-          className="input-field"
-          value={form.height}
-          onChange={handleChange}
-          placeholder="150-200 cm"
-        />
-        {errors.height && <div className="field-error">{errors.height}</div>}
-      </div>
-
-      <div className="input-group">
-        <label>Weight (kg) <span className="required-star">*</span></label>
-        <input
-          type="number"
-          name="weight"
-          className="input-field"
-          value={form.weight}
-          onChange={handleChange}
-          placeholder="40-120 kg"
-        />
-        {errors.weight && <div className="field-error">{errors.weight}</div>}
-      </div>
-
-      <div className="input-group">
-        <label>Partner's Religion Preference</label>
-        <select name="partnerReligion" className="input-field" value={form.partnerReligion} onChange={handleChange}>
-          <option value="">No Preference</option>
-          <option value="hindu">Hindu</option>
-          <option value="christian">Christian</option>
-          <option value="muslim">Muslim</option>
-          <option value="sikh">Sikh</option>
-          <option value="buddhist">Buddhist</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-
-      <div className="input-group">
-        <label>Education <span className="required-star">*</span></label>
-        <select name="education" className="input-field" value={form.education} onChange={handleChange}>
-          <option value="">Select Education</option>
-          <option value="highschool">High School</option>
-          <option value="graduate">Bachelor's Degree</option>
-          <option value="pg">Master's Degree</option>
-          <option value="phd">PhD</option>
-          <option value="diploma">Diploma</option>
-        </select>
-        {errors.education && <div className="field-error">{errors.education}</div>}
-      </div>
-
-      <div className="input-group form-field-full">
-        <div className="checkbox-group">
-          <div className="checkbox-label-main">Expectations from Partner</div>
-          <div className="checkbox-options">
-            {["Good Job", "Family Oriented", "Financial Stability", "Own House", "Car Owner"].map(exp => (
-              <label key={exp} className="checkbox-option">
-                <input
-                  type="checkbox"
-                  name="expectations"
-                  value={exp.toLowerCase().replace(/ /g, '_')}
-                  checked={form.expectations.includes(exp.toLowerCase().replace(/ /g, '_'))}
-                  onChange={handleChange}
-                />
-                {exp}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="input-group form-field-full">
-        <div className="checkbox-group">
-          <div className="checkbox-label-main">Lifestyle Preferences</div>
-          <div className="checkbox-options">
-            {["Vegetarian", "Non-Vegetarian", "Vegan", "Fitness Enthusiast", "Non-Smoker"].map(life => (
-              <label key={life} className="checkbox-option">
-                <input
-                  type="checkbox"
-                  name="lifestyle"
-                  value={life.toLowerCase().replace(/ /g, '_')}
-                  checked={form.lifestyle.includes(life.toLowerCase().replace(/ /g, '_'))}
-                  onChange={handleChange}
-                />
-                {life}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      const formData = new FormData();
+      
+      // Append all form fields
+      Object.keys(form).forEach((key) => {
+        if (key === "photos") {
+          form.photos.forEach((photo, index) => {
+            formData.append(`photos`, photo);
+          });
+        } else if (form[key] !== null && form[key] !== "") {
+          formData.append(key, form[key]);
+        }
+      });
+      
+      const response = await submitProfile(formData);
+      
+      // Handle 200 success
+      if (response.status_code === 200 || response.status === 201) {
+        setSnackbar({
+          open: true,
+          message: response.data?.message || "Profile submitted successfully!",
+          severity: "success"
+        });
+        
+        // Reset form after successful submission
+        setTimeout(() => {
+          window.location.href = "/profiles";
+        }, 2000);
+      } else if (response.status_code === 400) {
+        setSnackbar({
+          open: true,
+          message: response.data?.message.dob,
+          severity: "failed"
+        });
+      } else if (response.status_code === 500) {
+        setSnackbar({
+          open: true,
+          message: response.data?.message,
+          severity: "failed"
+        });
+      }
+      
+    } catch (error) {
+      console.error("Submission error:", error);
+      
+      if (error.response) {
+        const { status_code, data } = error.response;
+        
+        if (status_code === 400) {
+          // Handle 400 Bad Request - Validation errors
+          const errorMessage = data?.message || "Validation failed. Please check your inputs.";
+          setSnackbar({
+            open: true,
+            message: errorMessage,
+            severity: "warning"
+          });
+          
+          // Set field-specific errors if available
+          if (data?.message && typeof data.message === 'object') {
+            setErrors(data.message);
+          }
+          
+        } else if (status === 500) {
+          // Handle 500 Internal Server Error
+          setSnackbar({
+            open: true,
+            message: data?.message || "Server error. Please try again later.",
+            severity: "error"
+          });
+          
+        } else {
+          // Handle all other status codes (401, 403, 404, etc.)
+          setSnackbar({
+            open: true,
+            message: data?.message || "An error occurred. Please try again.",
+            severity: "error"
+          });
+        }
+        
+      } else if (error.request) {
+        // Network error - no response received
+        setSnackbar({
+          open: true,
+          message: "Network error. Please check your internet connection.",
+          severity: "error"
+        });
+        
+      } else {
+        // Request setup error
+        setSnackbar({
+          open: true,
+          message: error.message || "An error occurred. Please try again.",
+          severity: "error"
+        });
+      }
+      
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const getStepContent = () => {
+    switch (activeStep) {
+      case 0:
+        return (
+          <BasicDetails
+            form={form}
+            errors={errors}
+            handleChange={handleChange}
+            dropdowns={dropdowns}
+          />
+        );
+      case 1:
+        return (
+          <HoroscopeDetails
+            form={form}
+            handleChange={handleChange}
+          />
+        );
+      case 2:
+        return (
+          <FamilyDetails
+            form={form}
+            handleChange={handleChange}
+            dropdowns={dropdowns}
+          />
+        );
+      case 3:
+        return (
+          <PhotoUpload
+            photos={form.photos}
+            handlePhotoUpload={handlePhotoUpload}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="register-container">
       <div className="register-card">
+        
+        {/* Sidebar with Stepper */}
+        {/* <div className="register-sidebar">
+          <div className="sidebar-header">
+            <h3>Create Profile</h3>
+            <p>Find your perfect match</p>
+          </div>
+          
+          <div className="step-list">
+            {steps.map((step, index) => (
+              <button
+                key={index}
+                className={`step-item ${activeStep === index ? "step-active" : ""} ${
+                  activeStep > index ? "step-done" : ""
+                }`}
+                onClick={() => activeStep > index && setActiveStep(index)}
+                disabled={activeStep < index}
+              >
+                <div className="step-number">
+                  {activeStep > index ? <CheckCircle /> : index + 1}
+                </div>
+                <div className="step-text">
+                  <span className="step-label">{step.label}</span>
+                  <span className="step-desc">{step.description}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div> */}
+
         {/* Main Content */}
         <div className="register-content">
           <div className="register-scrollable">
             <div className="content-header">
-              <h2 className="content-title">{steps[activeStep].name}</h2>
-              <p className="content-subtitle">
-                {activeStep === 0 && "Let's start with your basic information"}
-                {activeStep === 1 && "Tell us more about your professional background"}
-                {activeStep === 2 && "Almost done! Share your preferences"}
-              </p>
+              <h2 className="content-title">{steps[activeStep].label}</h2>
+              <p className="content-subtitle">{steps[activeStep].description}</p>
             </div>
+            
+            {loading ? (
+              <div className="loading-container">
+                <CircularProgress sx={{ color: "#db2777" }} />
+              </div>
+            ) : (
+              <div className="form-section">{getStepContent()}</div>
+            )}
+          </div>
 
-            <div className="form-section">
-              {activeStep === 0 && renderBasicInfo()}
-              {activeStep === 1 && renderProfileDetails()}
-              {activeStep === 2 && renderPreferences()}
-            </div>
-            <div className="button-group">
-              <button
-                className="btn-back"
-                disabled={activeStep === 0 || loading}
-                onClick={handleBack}
-              >
-                <ArrowBack style={{ fontSize: 18 }} />
-                Back
+          {/* Navigation Buttons */}
+          <div className="button-group">
+            {activeStep > 0 && (
+              <button className="btn-back" onClick={handleBack}>
+                <ChevronLeft /> Back
               </button>
-
+            )}
+            
+            {activeStep < steps.length - 1 ? (
+              <button className="btn-next" onClick={handleNext}>
+                Next <ChevronRight />
+              </button>
+            ) : (
               <button
                 className="btn-next"
-                disabled={loading}
-                onClick={handleNext}
+                onClick={handleSubmit}
+                disabled={isSubmitting}
               >
-                {loading ? (
-                  <CircularProgress size={20} style={{ color: "#fff" }} />
-                ) : activeStep === steps.length - 1 ? (
-                  <>
-                    <LockOutlined style={{ fontSize: 18 }} />
-                    Submit
-                  </>
+                {isSubmitting ? (
+                  <CircularProgress size={20} sx={{ color: "white" }} />
                 ) : (
-                  <>
-                    Next
-                    <ArrowForward style={{ fontSize: 18 }} />
-                  </>
+                  "Submit Profile"
                 )}
               </button>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -485,10 +429,14 @@ const RegisterPage = () => {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ borderRadius: "12px" }}>
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

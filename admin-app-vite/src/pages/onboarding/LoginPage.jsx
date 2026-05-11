@@ -64,9 +64,9 @@ const LoginPage = () => {
         </form>
 
         <div className="links">
-          <a href="/send-otp?purpose=forgot_password">Forgot Password?</a>
-          <span>|</span>
           <a href="/send-otp?purpose=register">Register</a>
+          <span>|</span>
+          <a href="/send-otp?purpose=forgot_password">Forgot Password?</a>
         </div>
       </div>
     </div>

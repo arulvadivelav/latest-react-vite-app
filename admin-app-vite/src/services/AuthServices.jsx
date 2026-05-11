@@ -1,19 +1,35 @@
-const BASE_URL = "http://192.168.3.122:8000/v1/"
+const BASE_URL = "http://127.0.0.1:8000/v1/";
 
-export const apiRequest = async (endpoint, method = "GET", body = null) => {
+export const apiRequest = async (
+  endpoint,
+  method = "GET",
+  body = null,
+  isFormData = false
+) => {
+
   const config = {
     method,
-    headers: {
-      "Content-Type": "application/json",
-    }
+    headers: {},
   };
 
-  if (body) {
-    config.body = JSON.stringify(body);
+  // JSON request
+  if (!isFormData) {
+    config.headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, config)
+  // Body
+  if (body) {
+    config.body = isFormData
+      ? body
+      : JSON.stringify(body);
+  }
+
+  const response = await fetch(
+    `${BASE_URL}${endpoint}`,
+    config
+  );
+
   const data = await response.json();
 
-  return data
+  return data;
 };
