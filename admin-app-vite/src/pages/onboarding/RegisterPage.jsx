@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 import {
   CircularProgress,
   Snackbar,
@@ -53,7 +54,18 @@ const RegisterPage = () => {
     cities: []
   });
 
+  const location = useLocation();
+  
+  const {
+    email_id,
+    phone,
+    password
+  } = location.state || {};
+
   const [form, setForm] = useState({
+    email_id: email_id,
+    phone_number: phone,
+    password: password,
     profile_created_for: "",
     first_name: "",
     last_name: "",
@@ -174,6 +186,7 @@ const RegisterPage = () => {
     const newErrors = {};
     
     if (activeStep === 0) {
+      if (!form.profile_created_for) newErrors.profile_created_for = "Profile Created for";
       if (!form.first_name) newErrors.first_name = "First name is required";
       if (!form.gender) newErrors.gender = "Gender is required";
       if (!form.marital_status) newErrors.marital_status = "Marital status is required";
@@ -226,7 +239,7 @@ const RegisterPage = () => {
       const response = await submitProfile(formData);
       
       // Handle 200 success
-      if (response.status_code === 200 || response.status === 201) {
+      if (response.status_code === 200 || response.status_code === 201) {
         setSnackbar({
           open: true,
           message: response.data?.message || "Profile submitted successfully!",
