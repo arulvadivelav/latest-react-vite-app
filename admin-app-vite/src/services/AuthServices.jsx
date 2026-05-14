@@ -1,4 +1,4 @@
-const BASE_URL = "http://15.207.21.105:8000/v1/";
+const BASE_URL = "https://django-practice-v1.onrender.com/v1/";
 
 export const apiRequest = async (
   endpoint,
